@@ -1,0 +1,68 @@
+[
+    {
+        "model": "usage_app.usage",
+        "pk": 1,
+        "fields": {
+            "customer": 123,
+            "service": "Database Hosting",
+            "price_per_unit": "0.05",
+            "units_consumed": 58,
+            "usage_date": "2023-08-09T15:30:00"
+        }
+    },
+    {
+        "model": "usage_app.usage",
+        "pk": 2,
+        "fields": {
+            "customer": 456,
+            "service": "Load Balancer",
+            "price_per_unit": "0.03",
+            "units_consumed": 27,
+            "usage_date": "2023-08-10T10:00:00"
+        }
+    },
+    {
+        "model": "usage_app.usage",
+        "pk": 3,
+        "fields": {
+            "customer": 456,
+            "service": "Load Balancer",
+            "price_per_unit": "0.03",
+            "units_consumed": 27,
+            "usage_date": "2023-08-12T10:00:00"
+        }
+    },
+    {
+        "model": "usage_app.usage",
+        "pk": 4,
+        "fields": {
+            "customer": 123,
+            "service": "Linux Instance",
+            "price_per_unit": "0.15",
+            "units_consumed": 42,
+            "usage_date": "2023-08-12T08:30:00"
+        }
+    },
+    {
+        "model": "usage_app.usage",
+        "pk": 5,
+        "fields": {
+            "customer": 123,
+            "service": "CDN Storage",
+            "price_per_unit": "0.02",
+            "units_consumed": 15,
+            "usage_date": "2023-07-23T16:45:00"
+        }
+    },
+    {
+        "model": "usage_app.usage",
+        "pk": 6,
+        "fields": {
+            "customer": 456,
+            "service": "Domain Name Registration",
+            "price_per_unit": "14.99",
+            "units_consumed": 1,
+            "usage_date": "2023-08-08T12:00:00"
+        }
+    }
+]
