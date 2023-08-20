@@ -4,7 +4,6 @@ from .serializers import AccumulatedUsageSerializer
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 import re
-import json
 
 class AccumalatedUsageCreateView(generics.CreateAPIView):
     serializer_class = AccumulatedUsageSerializer
