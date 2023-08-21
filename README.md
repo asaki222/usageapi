@@ -9,10 +9,10 @@ The `usage_app` is a Django-based web service that handles usage data and provid
 1. Clone the repository:
    ```sh
    git clone https://github.com/your-username/usage_app.git
-   cd usage_app
+   cd UsageTracker
 
 2. Set up a virtual environment (optional but recommended):
-  `python -m venv venv
+  `python3 -m venv venv
     source venv/bin/activate
     `
 3. 
@@ -29,7 +29,7 @@ Seed the database with initial data:
 ## Usage Client
 
 1. Install the usage_client library:
-   ``pip install git+https://github.com/your-username/usage_client.git``
+   ``pip install .`
 
 2. Use it in your code
 ```from usage_client import UsageAPIClient, NetworkError, ValidationError
