@@ -12,7 +12,7 @@ or follow the steps below:
 
 ## Setting Up the API (usage_app) Manually
 
-The `usage_app` is a Django-based web service that handles usage data and provides an API endpoint for recording usage. To run the app locally, follow these steps:
+The `usage_app` is a Django-based web service that handles usage data and provides an API endpoint for recording usage. To run the app locally, follow these steps:go
 
 1. Clone the repository:
    ```sh
