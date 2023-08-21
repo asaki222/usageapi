@@ -20,9 +20,11 @@ Create and apply database migrations:
 `pip install -r requirements.txt`
 4. 
 Seed the database with initial data:
-`python manage.py loaddata customer_data.json
-      python manage.py loaddata usage_data.json
-    `
+``` 
+    python manage.py migrate
+    python manage.py loaddata customer_data.json
+    python manage.py loaddata usage_data.json
+```
 5. Run development server 
 ``python manage.py runserver``
 
@@ -31,18 +33,15 @@ Seed the database with initial data:
 1. Install the usage_client library:
    ``pip install .`
 
-2. Use it in your code
-```from usage_client import UsageAPIClient, NetworkError, ValidationError
+2. To test, open up your terminal and launch a python:
+
+the client currently only accepts integers
+
+``python3``
+
+```from usage_client import UsageAPIClient
 
 client = UsageAPIClient("http://localhost:8000")  # Adjust the URL as needed
-
-try:
-    customer_id = "324"
-    response = client.create_usage(customer_id)
-    print(f"Response: {response.status_code}")
-except ValidationError as e:
-    print(f"Validation Error: {e}")
-except NetworkError as e:
-    print(f"Network Error: {e}")
+client.create(123)
 
 ```
