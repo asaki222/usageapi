@@ -23,7 +23,8 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
                 }
             else:
                 total_usage, total_price = calculate_total_usage_and_price(usage_records)
-                accumulated_usage = update_or_create_accumulated_usage(customer, total_usage, total_price)                accumulated_usage.save()
+                accumulated_usage = update_or_create_accumulated_usage(customer, total_usage, total_price)                
+                accumulated_usage.save()
                 return AccumulatedUsageSerializer(accumulated_usage).data
         except ValidationError as ve:
             raise ve 
@@ -34,16 +35,16 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
 
     #didnt move this method to the helpers file due to circular input
     def handle_processed_entry_error(self, customer):
-        try:
-            today = datetime.now().date()
-            accumulated_usage = AccumulatedUsage.objects.get(
+        today = datetime.now().date()
+        accumulated_usage = AccumulatedUsage.objects.get(
                 customer=customer,
                 month=today.month,
                 year=today.year
-            )
+        )
+        if accumulated_usage is None:
+            error_message = f"No accumulated usage record or usage records found for customer {customer.name}."
+            return error_message
+        else:
             payload = AccumulatedUsageSerializer(accumulated_usage).data
             error_message = f"Entry has already been processed for customer {customer.name}."
             return error_message, payload
-        except AccumulatedUsage.DoesNotExist:
-            error_message = f"No accumulated usage record or usage records found for customer {customer.name}."
-            return error_message, None
