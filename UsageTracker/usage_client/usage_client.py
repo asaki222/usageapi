@@ -1,20 +1,25 @@
 import requests
-from usage_client.exceptions import ValidationError, NetworkError
+from usage_client.exceptions import NetworkError, ValidationError
+from builtins import isinstance
 
 class UsageAPIClient:
     def __init__(self, base_url):
         self.base_url = base_url
-
+           
     def create_usage(self, customer_id):
         url = f"{self.base_url}/api/v1/usage/create/"
-        data = {"customer_id": customer_id } 
+        data = {"customer": customer_id}
 
-        if not data.get("customer_id"):
+        if not data.get("customer"):
             raise ValidationError("customer", "Customer cannot be empty")
 
         try:
-            response = requests.post(url, json=data)
-            response.raise_for_status()
-            return response
+            response = requests.post(url, data)
+            response.raise_for_status()  
+            return response.json() 
         except requests.exceptions.RequestException as e:
-            raise NetworkError(str(e))
+            if isinstance(e, requests.exceptions.HTTPError):
+                status_code = e.response.status_code
+                raise NetworkError("Network Error", status_code=status_code)
+            else:
+                raise NetworkError("Network Error")
