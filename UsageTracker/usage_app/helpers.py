@@ -1,23 +1,26 @@
 from decimal import Decimal
-from datetime import datetime
 from .models import Usage, AccumulatedUsage
+from datetime import datetime, time
 
 
 def get_month_start_end_dates():
-        today = datetime.today()
-        start_date = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        end_date = today.replace(day=31, month=today.month, hour=23, minute=59, second=59, microsecond=999999)
+        today = datetime.now().date()
+        start_date = datetime.combine(today.replace(day=1), time(0, 0))
+        end_date = datetime.combine(today.replace(day=31), time(23, 59, 59, 999999))
+
         return start_date, end_date
     
 def get_unprocessed_usage_records(customer, start_date, end_date):
-        return Usage.objects.filter(
+        records = Usage.objects.filter(
             customer=customer,
             usage_date__range=(start_date, end_date),
             processed=False
         )
+        return records
         
 
 def calculate_total_usage_and_price(usage_records):
+        print('beginning of calcualating')
         total_usage = 0
         total_price = 0
         for usage in usage_records:
@@ -26,28 +29,33 @@ def calculate_total_usage_and_price(usage_records):
             total_price += price
             usage.processed = True
             usage.save()
+        print('finished calculating')
         return total_usage, total_price
     
-def update_or_create_accumulated_usage(customer, total_usage, total_price, usage_records):
-        today = datetime.today()
+def update_or_create_accumulated_usage(customer, total_usage, total_price):
+        print('we are getting into creating a new record')
+        today = datetime.now().date()
         try:
+            print('we trying it')
             accumulated_usage = AccumulatedUsage.objects.get(
                 customer=customer,
-                start_datetime__month=today.month,
-                start_datetime__year=today.year
+                month=today.month,
+                year=today.year
             )
             accumulated_usage.accumulated_units += total_usage
             accumulated_usage.accumulated_price += total_price
+            print('we aabout to save the record')
             accumulated_usage.save()
+            print('we saved it')
         except AccumulatedUsage.DoesNotExist:
-            starting_date_of_records = usage_records.first().usage_date
-            ending_date_of_records = usage_records.last().usage_date
+            print('we never found usage or a record')
             accumulated_usage = AccumulatedUsage.objects.create(
                 customer=customer,
-                start_datetime=starting_date_of_records,
-                end_datetime=ending_date_of_records,
+                month=today.month,
+                year=today.year,
                 accumulated_units=total_usage,
                 accumulated_price=total_price
             )
-            accumulated_usage.save()
-        return accumulated_usage
+            print('after record was created')
+            print('we saved a record', accumulated_usage)
+            return accumulated_usage
