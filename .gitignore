@@ -1,1 +1,5 @@
 .venv
+build
+UsageTracker/__pycache__
+usage_client/__pycache__
+usage_app/__pycache__
