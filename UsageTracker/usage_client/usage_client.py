@@ -15,7 +15,6 @@ class UsageAPIClient:
 
         try:
             response = requests.post(url, data)
-            response.raise_for_status()  
             return response.json() 
         except requests.exceptions.RequestException as e:
             if isinstance(e, requests.exceptions.HTTPError):

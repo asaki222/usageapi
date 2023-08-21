@@ -1,8 +1,16 @@
 # Usage App
 
-This application and library allow you to efficiently track cloud usage for customers. The library simplifies the process by taking a customer ID as input and generating a bill with usage details and the total price owed for the current month. To get started, follow the steps below:
+This application and library allow you to efficiently track cloud usage for customers. The library simplifies the process by taking a customer ID as input and generating a bill with usage details and the total price owed for the current month. To get started, 
 
-## Setting Up the API (usage_app)
+Run this script
+```
+chmod +x setup_script.sh
+./setup_script.sh
+```
+
+or follow the steps below:
+
+## Setting Up the API (usage_app) Manually
 
 The `usage_app` is a Django-based web service that handles usage data and provides an API endpoint for recording usage. To run the app locally, follow these steps:
 
@@ -12,9 +20,9 @@ The `usage_app` is a Django-based web service that handles usage data and provid
    cd UsageTracker
 
 2. Set up a virtual environment (optional but recommended):
-  `python3 -m venv venv
+  ```python3 -m venv venv
     source venv/bin/activate
-    `
+    ```
 3. 
 Create and apply database migrations:
 `pip install -r requirements.txt`
