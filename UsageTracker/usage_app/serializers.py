@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import AccumulatedUsage
-from usage_app.utils import decimal_to_price
 from .helpers import calculate_total_usage_and_price, update_or_create_accumulated_usage, get_unprocessed_usage_records, get_month_start_end_dates
 from datetime import datetime
 from usage_app.exceptions import NetworkError, ValidationError
@@ -12,21 +11,19 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
    
    
     def create(self, validated_data):
+
         try:
             customer = validated_data['customer']
-
             start_date, end_date = get_month_start_end_dates()
             usage_records = get_unprocessed_usage_records(customer, start_date, end_date)
             if len(usage_records) == 0:
                 error_message = self.handle_processed_entry_error(customer)
-                raise serializers.ValidationError({
-                    "error": error_message,
-                })
+                return {
+                    "message": error_message,
+                }
             else:
                 total_usage, total_price = calculate_total_usage_and_price(usage_records)
-                accumulated_usage = update_or_create_accumulated_usage(customer, total_usage, total_price)
-                accumulated_usage.price_in_dollars = decimal_to_price(accumulated_usage.accumulated_price)
-                accumulated_usage.save()
+                accumulated_usage = update_or_create_accumulated_usage(customer, total_usage, total_price)                accumulated_usage.save()
                 return AccumulatedUsageSerializer(accumulated_usage).data
         except ValidationError as ve:
             raise ve 

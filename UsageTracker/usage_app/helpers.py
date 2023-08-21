@@ -1,6 +1,7 @@
 from decimal import Decimal
 from .models import Usage, AccumulatedUsage
 from datetime import datetime, time
+from usage_app.utils import decimal_to_price
 
 
 def get_month_start_end_dates():
@@ -32,21 +33,25 @@ def calculate_total_usage_and_price(usage_records):
     
 def update_or_create_accumulated_usage(customer, total_usage, total_price):
         today = datetime.now().date()
-        try:
-            accumulated_usage = AccumulatedUsage.objects.get(
+        accumulated_usage = AccumulatedUsage.objects.get(
                 customer=customer,
                 month=today.month,
                 year=today.year
             )
+        
+        if accumulated_usage is not None:
             accumulated_usage.accumulated_units += total_usage
             accumulated_usage.accumulated_price += total_price
             accumulated_usage.save()
-        except AccumulatedUsage.DoesNotExist:
+            return accumulated_usage
+        else:
             accumulated_usage = AccumulatedUsage.objects.create(
                 customer=customer,
                 month=today.month,
                 year=today.year,
                 accumulated_units=total_usage,
-                accumulated_price=total_price
+                accumulated_price=total_price,
+                price_in_dollars=decimal_to_price(total_price)
+    
             )
             return accumulated_usage

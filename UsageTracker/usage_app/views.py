@@ -12,11 +12,17 @@ class AccumalatedUsageCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         
         try:
-            accumulated_data = self.perform_create(serializer)
-            return Response(
-                {'message': 'Usage entry created successfully', 'accumulated_data': accumulated_data},
-                status=status.HTTP_201_CREATED
-            )
+            response = self.perform_create(serializer)
+            if "No accumulated usage record or usage records found" in response:
+                return Response(
+                    {'message': 'Usage entry created successfully', 'accumulated_data': response},
+                    status=status.HTTP_201_CREATED
+                )
+            else:
+                return Response(
+                    {'message': response},
+                     status=status.HTTP_404_NOT_FOUND
+                )
         except serializers.ValidationError as e:
             if "Entry has already been processed" in str(e):
                 error_detail = str(e.detail.get('error', ''))
@@ -28,10 +34,6 @@ class AccumalatedUsageCreateView(generics.CreateAPIView):
                     {'error': error_detail, 'data': data_dict},
                     status=status.HTTP_409_CONFLICT 
                 )
-        except ObjectDoesNotExist as e:
-            if "No accumulated usage record or usage records found" in str(e):
-                error_detail = str(e.detail.get('error', ''))
-                return Response({'error': error_detail}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

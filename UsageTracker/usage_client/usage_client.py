@@ -21,4 +21,4 @@ class UsageAPIClient:
                 status_code = e.response.status_code
                 raise NetworkError("Network Error", status_code=status_code)
             else:
-                raise NetworkError("Network Error")
+                raise NetworkError("Network Error", status_code=status_code)
