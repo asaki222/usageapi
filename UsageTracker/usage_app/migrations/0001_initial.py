@@ -36,11 +36,12 @@ class Migration(migrations.Migration):
             name='AccumulatedUsage',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('start_datetime', models.DateTimeField()),
-                ('end_datetime', models.DateTimeField()),
-                ('accumulated_units', models.IntegerField()),
-                ('accumulated_price', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('accumulated_units',models.DecimalField(blank=True, decimal_places=2, null=True)),
+                ('accumulated_price', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
                 ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='usage_app.customer')),
+                ('year',models.IntegerField(blank=True, null=True)),
+                ('month', models.IntegerField(blank=True, null=True)),
+                ('price_in_dollars', models.CharField(blank=True, max_length=10, null=True))
             ],
         ),
     ]

@@ -21,6 +21,7 @@ Create and apply database migrations:
 4. 
 Seed the database with initial data:
 ``` 
+    python manage.py makemigrations 
     python manage.py migrate
     python manage.py loaddata customer_data.json
     python manage.py loaddata usage_data.json
@@ -30,18 +31,18 @@ Seed the database with initial data:
 
 ## Usage Client
 
-1. Install the usage_client library:
+1. Install the usage_client librar(make sure you are still in the virtualenv if you are running it):
    ``pip install .`
 
 2. To test, open up your terminal and launch a python:
 
 the client currently only accepts integers
 
-``python3``
+```python3```
 
 ```from usage_client import UsageAPIClient
 
 client = UsageAPIClient("http://localhost:8000")  # Adjust the URL as needed
-client.create(123)
+client.create_usage(123)
 
 ```
