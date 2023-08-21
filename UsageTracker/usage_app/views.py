@@ -13,7 +13,6 @@ class AccumalatedUsageCreateView(generics.CreateAPIView):
         
         try:
             accumulated_data = self.perform_create(serializer)
-            print('data', accumulated_data)
             return Response(
                 {'message': 'Usage entry created successfully', 'accumulated_data': accumulated_data},
                 status=status.HTTP_201_CREATED
