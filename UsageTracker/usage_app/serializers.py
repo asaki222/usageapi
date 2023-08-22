@@ -17,10 +17,10 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
             start_date, end_date = get_month_start_end_dates()
             usage_records = get_unprocessed_usage_records(customer, start_date, end_date)
             if len(usage_records) == 0:
-                error_message, payload = self.handle_processed_empty_records(customer)
+                error_message, total_price = self.handle_processed_empty_records(customer)
                 return {
                     "message": error_message,
-                    "data": payload
+                    "total_price": total_price
                 }
             else:
                 total_price = calculate_total_price(usage_records)
@@ -48,7 +48,4 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
         else:
             accumulated_usage = accumulated_usage.first()
             error_message = f"Entry has already been processed for customer {customer.name}."
-            payload = {
-                'total_price': accumulated_usage.price_in_dollars
-            }
-            return error_message, payload
+            return error_message, accumulated_usage.price_in_dollars
