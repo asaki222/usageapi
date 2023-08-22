@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import AccumulatedUsage
 from .helpers import calculate_total_price, update_or_create_accumulated_usage, get_unprocessed_usage_records, get_month_start_end_dates
 from datetime import datetime
-from usage_app.exceptions import NetworkError, ValidationError
 
 class AccumulatedUsageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,12 +25,9 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
                 total_price = calculate_total_price(usage_records)
                 accumulated_usage = update_or_create_accumulated_usage(customer, total_price)                
                 return accumulated_usage
-        except ValidationError as ve:
-            raise ve 
-        except NetworkError as e:
+        except serializers.ValidationError as e:
             error_message = str(e)
             raise serializers.ValidationError(error_message)
-
 
     #didnt move this method to the helpers file due to circular input
     def handle_processed_empty_records(self, customer):

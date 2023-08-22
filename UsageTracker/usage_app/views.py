@@ -13,7 +13,7 @@ class AccumalatedUsageCreateView(generics.CreateAPIView):
             response = self.perform_create(serializer)
             return self.handle_response(response)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def handle_response(self, response):
         message = response['message']
