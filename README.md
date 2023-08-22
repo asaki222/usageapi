@@ -2,23 +2,22 @@
 
 This application and library allow you to efficiently track cloud usage for customers. The library simplifies the process by taking a customer ID as input and generating a bill with usage details and the total price owed for the current month. First here's some links to navigate this README:
 
+### Table Of Contents
 1. [Setting Up the API (usage_app)](#setting-up-the-api-usage_app-manually)
 2. [Usage Client](#usage-client)
 3. [Running Tests](#running-tests)
 
 ## Setting Up the API (usage_app) 
 
-
 The `usage_app` is a Django-based web service that handles usage data and provides an API endpoint for recording usage. To run the app locally:
 
 Use this bash script
 
-
-Run this bash script
-```
-chmod +x setup_script.sh
-./setup_script.sh
-```
+   Run this bash script
+   ```
+   chmod +x setup_script.sh
+   ./setup_script.sh
+   ```
 
 OR run this manually
 
@@ -62,7 +61,7 @@ The usage client takes in the id of a customer. When we use the method, it fires
 
 2. To test, open up your terminal and launch a python:
 
-This client currently only accepts integers as customer ids
+#### This client currently only accepts integers as customer ids
 
 ```
 python3
@@ -78,34 +77,34 @@ client.create_usage(123)
 
 ### Expected Behavior of Usage Client
 
-No new usage data found for customer or bill for customer
+#### No new usage data found for customer or bill for customer
 
-```
+``
 {'message': {'message': 'No accumulated usage record or usage records found for customer Alice.'}}
-```
+``
 
-Posting to get a new recording of usage should give you this result
+#### Posting to get a new recording of usage should give you this result
 
-```
+``
 {'message': {'id': 1, 'month': 8, 'year': 2023, 'accumulated_price': '16.61', 'price_in_dollars': '$16.61', 'customer': 456}}
-```
+``
 
-If there was already a record it should give you this id
+#### If there was already a record it should give you this id
 
-```
+``
 {'message': {'message': 'Entry has already been processed for customer Bob.', 'data': {'total_price': '$16.61'}}}
-```
+``
 
-If no record exist
+#### If no record exist
 
-```
+``
 {'message': 'No accumulated usage record or usage records found for customer.'}
-```
+``
 
 ## Running Tests
 
-```
+``
 python manage.py test usage_app.test_usage_app
 
 python manage.py test tests.test_usage_client
-```
+``
