@@ -17,7 +17,6 @@ def get_unprocessed_usage_records(customer, start_date, end_date):
             processed=False
         )
         return records
-        
 
 def calculate_total_price(usage_records):
         total_price = 0
@@ -27,17 +26,15 @@ def calculate_total_price(usage_records):
             usage.processed = True
             usage.save()
         return total_price
+
 def create_success_payload(acc, updated=False):
       message = 'Usage entry successful'
       if updated != False: 
             message = "Usage entry update"
 
-      return { 
-                 'message': message,
+      return { 'message': message,
                 'total_price': acc.price_in_dollars
-            }
-def response_obj(response):
-      return  {'message': response['message'], 'total_price': response['total_price']}
+             }
 
 def update_or_create_accumulated_usage(customer, total_price):
         today = datetime.now().date()
