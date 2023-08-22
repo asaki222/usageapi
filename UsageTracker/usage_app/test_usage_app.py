@@ -2,7 +2,6 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import AccumulatedUsage, Customer, Usage
-from django.utils import timezone
 
 class AccumulatedUsageAPITest(TestCase):
     def setUp(self):
@@ -13,8 +12,8 @@ class AccumulatedUsageAPITest(TestCase):
             service='Load Balancer',
             units_consumed=27,
             price_per_unit='20.00',
-            usage_date=timezone.now().date()  
-        )# Make sure to use the date, not datetime
+            usage_date="2023-08-09T12:00:00",
+        )
     
 
     def test_create_accumulated_usage(self):
@@ -27,6 +26,5 @@ class AccumulatedUsageAPITest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
     def tearDown(self):
-        # Clean up any test data or resources
         AccumulatedUsage.objects.all().delete()
         Customer.objects.all().delete()
