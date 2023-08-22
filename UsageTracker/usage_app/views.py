@@ -22,6 +22,11 @@ class AccumalatedUsageCreateView(generics.CreateAPIView):
                 {'message': message, 'total_price': response['total_price']},
                 status=status.HTTP_201_CREATED
             )
+        elif "Usage entry update" in message:
+               return Response(
+                {'message': message, 'total_price': response['total_price']},
+                status=status.HTTP_200_OK
+            )
         elif "Entry has already been processed" in message:
             return Response(
                 {'message': message, 'total_price': response['total_price']},
@@ -29,7 +34,7 @@ class AccumalatedUsageCreateView(generics.CreateAPIView):
             )
         elif "No accumulated usage record or usage records found" in message:
             return Response(
-                {'message': message},
+                {'message': message, 'total_price': None},
                 status=status.HTTP_404_NOT_FOUND
             )
 

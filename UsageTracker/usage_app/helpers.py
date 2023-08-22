@@ -27,7 +27,16 @@ def calculate_total_price(usage_records):
             usage.processed = True
             usage.save()
         return total_price
-    
+def create_success_payload(acc, updated=False):
+      message = 'Usage entry successful'
+      if updated != False: 
+            message = "Usage entry update"
+
+      return { 
+                 'message': message,
+                'total_price': acc.price_in_dollars
+            }
+
 def update_or_create_accumulated_usage(customer, total_price):
         today = datetime.now().date()
         accumulated_usage = AccumulatedUsage.objects.filter(
@@ -41,11 +50,7 @@ def update_or_create_accumulated_usage(customer, total_price):
             accumulated_usage.accumulated_price += total_price
             accumulated_usage.price_in_dollars = decimal_to_price(total_price)
             accumulated_usage.save()
-            payload = {
-                  'customer':customer,
-                  'total_price': accumulated_usage.first().price_in_dollars
-            }
-            return payload
+            return create_success_payload(accumulated_usage, updated=True)
         else:
             accumulated_usage = AccumulatedUsage.objects.create(
                 customer=customer,
@@ -55,9 +60,4 @@ def update_or_create_accumulated_usage(customer, total_price):
                 price_in_dollars=decimal_to_price(total_price)
     
             )
-            payload = {  
-                         'message':'Usage entry successful',
-                         'customer': customer,
-                         'total_price': accumulated_usage.price_in_dollars
-            }
-            return payload
+            return create_success_payload(accumulated_usage)
