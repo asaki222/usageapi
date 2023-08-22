@@ -34,8 +34,7 @@ OR run this manually
     source venv/bin/activate
   ```
 
-3. 
-Create and apply database migrations:
+3. Create and apply database migrations:
    ```
       pip install -r requirements.txt
    ```
@@ -50,9 +49,9 @@ Create and apply database migrations:
    ```
 
 5. Run development server 
-```
-   python manage.py runserver
-```
+   ```
+      python manage.py runserver
+   ```
 
 ## Usage Client
 
