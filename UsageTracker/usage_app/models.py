@@ -23,7 +23,6 @@ class AccumulatedUsage(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     month = models.IntegerField(blank=True, null=True)
     year = models.IntegerField(blank=True, null=True)
-    accumulated_units = models.IntegerField(blank=True, null=True)
     accumulated_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True) 
     price_in_dollars = models.CharField(max_length=10, blank=True, null=True)
     
