@@ -29,9 +29,6 @@ def calculate_total_price(usage_records):
 
 def create_success_payload(acc, updated=False):
       message = 'Usage entry successful'
-      if updated != False: 
-            message = "Usage entry update"
-
       return { 'message': message,
                 'total_price': acc.price_in_dollars
              }
