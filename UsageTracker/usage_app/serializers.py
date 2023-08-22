@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import AccumulatedUsage
-from .helpers import calculate_total_usage_and_price, update_or_create_accumulated_usage, get_unprocessed_usage_records, get_month_start_end_dates
+from .helpers import calculate_total_price, update_or_create_accumulated_usage, get_unprocessed_usage_records, get_month_start_end_dates
 from datetime import datetime
 from usage_app.exceptions import NetworkError, ValidationError
 
@@ -17,15 +17,15 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
             start_date, end_date = get_month_start_end_dates()
             usage_records = get_unprocessed_usage_records(customer, start_date, end_date)
             if len(usage_records) == 0:
-                error_message = self.handle_processed_entry_error(customer)
+                error_message, payload = self.handle_processed_empty_records(customer)
                 return {
                     "message": error_message,
+                    "data": payload
                 }
             else:
-                total_usage, total_price = calculate_total_usage_and_price(usage_records)
-                accumulated_usage = update_or_create_accumulated_usage(customer, total_usage, total_price)                
-                accumulated_usage.save()
-                return AccumulatedUsageSerializer(accumulated_usage).data
+                total_price = calculate_total_price(usage_records)
+                accumulated_usage = update_or_create_accumulated_usage(customer, total_price)                
+                return accumulated_usage
         except ValidationError as ve:
             raise ve 
         except NetworkError as e:
@@ -34,17 +34,21 @@ class AccumulatedUsageSerializer(serializers.ModelSerializer):
 
 
     #didnt move this method to the helpers file due to circular input
-    def handle_processed_entry_error(self, customer):
+    def handle_processed_empty_records(self, customer):
         today = datetime.now().date()
-        accumulated_usage = AccumulatedUsage.objects.get(
+        accumulated_usage = AccumulatedUsage.objects.filter(
                 customer=customer,
                 month=today.month,
                 year=today.year
         )
-        if accumulated_usage is None:
-            error_message = f"No accumulated usage record or usage records found for customer {customer.name}."
-            return error_message
+        if len(accumulated_usage) == 0:
+            error_message = f"No accumulated usage record or usage records found for customer."
+            payload = {}
+            return error_message, payload
         else:
-            payload = AccumulatedUsageSerializer(accumulated_usage).data
+            accumulated_usage = accumulated_usage.first()
             error_message = f"Entry has already been processed for customer {customer.name}."
+            payload = {
+                'total_price': accumulated_usage.price_in_dollars
+            }
             return error_message, payload
