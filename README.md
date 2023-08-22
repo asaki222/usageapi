@@ -64,7 +64,9 @@ The usage client takes in the id of a customer. When we use the method, it fires
 
 This client currently only accepts integers as customer ids
 
-```python3```
+```
+python3
+```
 
 ```
 from usage_client import UsageAPIClient
