@@ -103,8 +103,8 @@ client.create_usage(123)
 
 ## Running Tests
 
-``
+```
 python manage.py test usage_app.test_usage_app
 
 python manage.py test tests.test_usage_client
-``
+```
