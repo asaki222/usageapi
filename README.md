@@ -23,27 +23,36 @@ chmod +x setup_script.sh
 OR run this manually
 
 1. Clone the repository:
-   ```sh
+  ```
    git clone https://github.com/your-username/usage_app.git
    cd UsageTracker
+  ```
 
 2. Set up a virtual environment (optional but recommended):
-  ```python3 -m venv venv
+  ```
+    python3 -m venv venv
     source venv/bin/activate
-    ```
+  ```
+
 3. 
 Create and apply database migrations:
-`pip install -r requirements.txt`
-4. 
-Seed the database with initial data:
-``` 
-    python manage.py makemigrations 
-    python manage.py migrate
-    python manage.py loaddata customer_data.json
-    python manage.py loaddata usage_data.json
-```
+   ```
+      pip install -r requirements.txt
+   ```
+
+4. Seed the database with initial data:
+
+   ```
+      python manage.py makemigrations 
+      python manage.py migrate
+      python manage.py loaddata customer_data.json
+      python manage.py loaddata usage_data.json
+   ```
+
 5. Run development server 
-``python manage.py runserver``
+```
+   python manage.py runserver
+```
 
 ## Usage Client
 
@@ -58,7 +67,8 @@ This client currently only accepts integers as customer ids
 
 ```python3```
 
-```from usage_client import UsageAPIClient
+```
+from usage_client import UsageAPIClient
 
 client = UsageAPIClient("http://localhost:8000")  # Adjust the URL as needed
 client.create_usage(123)
