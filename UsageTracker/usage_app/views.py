@@ -1,7 +1,8 @@
-from rest_framework import generics, status, serializers
+from rest_framework import generics, status
 from rest_framework.response import Response
 from .serializers import AccumulatedUsageSerializer
 from .serializers import AccumulatedUsageSerializer
+from .helpers import response_obj
 
 class AccumalatedUsageCreateView(generics.CreateAPIView):
     serializer_class = AccumulatedUsageSerializer
@@ -19,17 +20,17 @@ class AccumalatedUsageCreateView(generics.CreateAPIView):
         message = response['message']
         if "Usage entry successful" in message:
             return Response(
-                {'message': message, 'total_price': response['total_price']},
+                response_obj(response),
                 status=status.HTTP_201_CREATED
             )
         elif "Usage entry update" in message:
                return Response(
-                {'message': message, 'total_price': response['total_price']},
+                response_obj(response),
                 status=status.HTTP_200_OK
             )
         elif "Entry has already been processed" in message:
             return Response(
-                {'message': message, 'total_price': response['total_price']},
+                response_obj(response),
                 status=status.HTTP_409_CONFLICT
             )
         elif "No accumulated usage record or usage records found" in message:

@@ -36,6 +36,8 @@ def create_success_payload(acc, updated=False):
                  'message': message,
                 'total_price': acc.price_in_dollars
             }
+def response_obj(response):
+      return  {'message': response['message'], 'total_price': response['total_price']}
 
 def update_or_create_accumulated_usage(customer, total_price):
         today = datetime.now().date()
