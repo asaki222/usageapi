@@ -17,8 +17,5 @@ class UsageAPIClient:
             response = requests.post(url, data)
             return response.json() 
         except requests.exceptions.RequestException as e:
-            if isinstance(e, requests.exceptions.HTTPError):
-                status_code = e.response.status_code
-                raise NetworkError("Network Error", status_code=status_code)
-            else:
-                raise NetworkError("Network Error", status_code=status_code)
+            status_code = e.response.status_code
+            raise NetworkError("Network Error", status_code=status_code)
